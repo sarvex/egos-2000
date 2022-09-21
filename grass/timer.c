@@ -11,7 +11,7 @@ static long long mtime_get() {
         time_lo = REGW(CLINT0_MTIME, 0);
     } while (REGW(CLINT0_MTIME, 4) != time_hi);
 
-    return (((unsigned long long)time_hi) << 32) | time_lo;
+    return (((long long)time_hi) << 32) | time_lo;
 }
 
 static void mtimecmp_set(long long time) {
