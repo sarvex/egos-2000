@@ -11,7 +11,6 @@
 
 #include "egos.h"
 
-#define QUANTUM_NCYCLES  5000
 #define CLINT0_MTIME     0x200bff8
 #define CLINT0_MTIMECMP  0x2004000
 
@@ -33,4 +32,4 @@ static void mtimecmp_set(long long time) {
 }
 
 void timer_init()  { mtimecmp_set(0); }
-void timer_reset() { mtimecmp_set(mtime_get() + QUANTUM_NCYCLES); }
+void timer_reset(int quantum) { mtimecmp_set(mtime_get() + quantum); }
