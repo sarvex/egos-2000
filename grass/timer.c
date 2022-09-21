@@ -1,14 +1,3 @@
-/*
- * (C) 2022, Cornell University
- * All rights reserved.
- */
-
-/* Author: Yunhao Zhang
- * Description: Initialize and reset timer;
- * see section 3.1.15 of the RISC-V manual, volume2, v1.10
- * and section 9.1, 9.3 of the Sifive FE310 manual, v19p04
- */
-
 #include "egos.h"
 
 #define CLINT0_MTIME     0x200bff8
