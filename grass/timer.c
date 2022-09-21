@@ -20,5 +20,10 @@ static void mtimecmp_set(long long time) {
     REGW(CLINT0_MTIMECMP, 4) = (unsigned int)(time >> 32);
 }
 
-void timer_init()  { mtimecmp_set(0); }
-void timer_reset(int quantum) { mtimecmp_set(mtime_get() + quantum); }
+void timer_init()  {
+    mtimecmp_set(0);
+}
+
+void timer_reset(int quantum) {
+    mtimecmp_set(mtime_get() + quantum);
+}
