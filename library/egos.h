@@ -68,6 +68,9 @@ extern struct grass *grass;
                                        /* 12KB   earth data           */
                                        /* earth code is in QSPI flash */
 
+void timer_init();
+void timer_reset(int quantum);
+struct earth *earth = (void*)GRASS_STACK_TOP;
 /* memory-mapped I/O register access macros */
 #define ACCESS(x) (*(__typeof__(*x) volatile *)(x))
 #define REGW(base, offset) (ACCESS((unsigned int*)(base + offset)))

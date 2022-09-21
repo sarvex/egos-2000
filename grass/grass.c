@@ -1,9 +1,7 @@
 #include "egos.h"
 
 int quantum = 50000;
-void timer_init();
-void timer_reset(int quantum);
-struct earth *earth = (void*)GRASS_STACK_TOP;
+
 void handler()  __attribute__((interrupt, aligned(128)));
 void handler() {
     earth->tty_info("Got timer interrupt.");
@@ -11,7 +9,8 @@ void handler() {
 }
 
 int main() {
-    earth->tty_success("Enter timer interrupt example.");
+    earth->tty_success("A timer interrupt example.");
+    /* Initialize the timer */
     timer_init();
     timer_reset(quantum);
     /* Register timer handler */

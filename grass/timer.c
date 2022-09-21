@@ -1,23 +1,21 @@
-#include "egos.h"
-
 #define CLINT0_MTIME     0x200bff8
 #define CLINT0_MTIMECMP  0x2004000
 
 static long long mtime_get() {
-    unsigned int time_lo, time_hi;
+    int low, high;
     /* Guard against rollover when reading mtime */
     do {
-        time_hi = REGW(CLINT0_MTIME, 4);
-        time_lo = REGW(CLINT0_MTIME, 0);
-    } while (REGW(CLINT0_MTIME, 4) != time_hi);
+        low = *(int*)(CLINT0_MTIME);
+        high = *(int*)(CLINT0_MTIME + 4);
+    } while (*(int*)(CLINT0_MTIME + 4) != high);
 
-    return (((long long)time_hi) << 32) | time_lo;
+    return (((long long)high) << 32) | low;
 }
 
 static void mtimecmp_set(long long time) {
-    REGW(CLINT0_MTIMECMP, 4) = 0xFFFFFFFF;
-    REGW(CLINT0_MTIMECMP, 0) = (unsigned int)time;
-    REGW(CLINT0_MTIMECMP, 4) = (unsigned int)(time >> 32);
+    *(int*)(CLINT0_MTIMECMP + 4) = 0xFFFFFFFF;
+    *(int*)(CLINT0_MTIMECMP + 0) = (int)time;
+    *(int*)(CLINT0_MTIMECMP + 4) = (int)(time >> 32);
 }
 
 void timer_init()  {
