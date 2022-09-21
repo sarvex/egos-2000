@@ -5,12 +5,9 @@ all: binary
 
 binary:
 	mkdir -p $(DEBUG) $(RELEASE)
-	@echo "$(GREEN)-------- Compile the Grass Layer --------$(END)"
+	@echo "$(GREEN)-------- Compile the Timer Example --------$(END)"
 	$(RISCV_CC) $(COMMON) $(GRASS_SRCS) $(GRASS_LD) -o $(RELEASE)/grass.elf
 	$(OBJDUMP) $(OBJDUMP_FLAGS) $(RELEASE)/grass.elf > $(DEBUG)/grass.lst
-	@echo "$(YELLOW)-------- Compile the Earth Layer --------$(END)"
-	$(RISCV_CC) $(COMMON) $(EARTH_SRCS) $(EARTH_LD) -o $(RELEASE)/earth.elf
-	$(OBJDUMP) $(OBJDUMP_FLAGS) $(RELEASE)/earth.elf > $(DEBUG)/earth.lst
 
 clean:
 	rm -rf build
