@@ -68,8 +68,9 @@ extern struct grass *grass;
                                        /* 12KB   earth data           */
                                        /* earth code is in QSPI flash */
 
-void timer_init();
-void timer_reset(int quantum);
+#define asm __asm__ volatile
+long long mtime_get();
+void mtimecmp_set(long long);
 struct earth *earth = (void*)GRASS_STACK_TOP;
 /* memory-mapped I/O register access macros */
 #define ACCESS(x) (*(__typeof__(*x) volatile *)(x))

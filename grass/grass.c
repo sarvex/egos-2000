@@ -5,26 +5,21 @@ int quantum = 50000;
 void handler()  __attribute__((interrupt, aligned(128)));
 void handler() {
     earth->tty_info("Got timer interrupt.");
-    timer_reset(quantum);
+    mtimecmp_set( mtime_get() + quantum );
 }
 
 int main() {
     earth->tty_success("A timer interrupt example.");
-    /* Initialize the timer */
-    timer_init();
-    timer_reset(quantum);
-    /* Register timer handler */
-    __asm__ volatile("csrw mtvec, %0" ::"r"(handler));
-    /* Enable global interrupt */
-    int mstatus;
-    __asm__ volatile("csrr %0, mstatus" : "=r"(mstatus));
-    mstatus |= 0x8;
-    __asm__ volatile("csrw mstatus, %0" ::"r"(mstatus));
+    mtimecmp_set( mtime_get() + quantum );
+
+    /* Register interrupt handler */
+    asm("csrw mtvec, %0" ::"r"(handler));
     /* Enable timer interrupt */
-    int mie;
-    __asm__ volatile("csrr %0, mie" : "=r"(mie));
-    mie |= 0x80;
-    __asm__ volatile("csrw mie, %0" ::"r"(mie));
+    int mstatus, mie;
+    asm("csrr %0, mstatus" : "=r"(mstatus));
+    asm("csrw mstatus, %0" ::"r"(mstatus | 0x8));
+    asm("csrr %0, mie" : "=r"(mie));
+    asm("csrw mie, %0" ::"r"(mie | 0x80));
     
     while(1);
 }
