@@ -1,35 +1,16 @@
-all:
+all: binary
+	@echo "$(YELLOW)-------- Create the Disk Image --------$(END)"
+	$(CC) $(TOOLS)/mkfs.c library/file/file.c -DMKFS $(INCLUDE) -o $(TOOLS)/mkfs
+	cd $(TOOLS); ./mkfs
+
+binary:
+	mkdir -p $(DEBUG) $(RELEASE)
 	@echo "$(GREEN)-------- Compile the Grass Layer --------$(END)"
 	$(RISCV_CC) $(COMMON) $(GRASS_SRCS) $(GRASS_LD) -o $(RELEASE)/grass.elf
 	$(OBJDUMP) $(OBJDUMP_FLAGS) $(RELEASE)/grass.elf > $(DEBUG)/grass.lst
 	@echo "$(YELLOW)-------- Compile the Earth Layer --------$(END)"
 	$(RISCV_CC) $(COMMON) $(EARTH_SRCS) $(EARTH_LD) -o $(RELEASE)/earth.elf
 	$(OBJDUMP) $(OBJDUMP_FLAGS) $(RELEASE)/earth.elf > $(DEBUG)/earth.lst
-
-.PHONY: apps
-apps: apps/system/*.c apps/user/*.c
-	mkdir -p $(DEBUG) $(RELEASE)
-	@echo "$(CYAN)-------- Compile the Apps Layer --------$(END)"
-	for FILE in $^ ; do \
-	  export APP=$$(basename $${FILE} .c);\
-	  echo "Compile" $${FILE} "=>" $(RELEASE)/$${APP}.elf;\
-	  $(RISCV_CC) $(COMMON) $(APPS_SRCS) $${FILE} $(APPS_LD) -Iapps -o $(RELEASE)/$${APP}.elf || exit 1 ;\
-	  echo "Compile" $${FILE} "=>" $(DEBUG)/$${APP}.lst;\
-	  $(OBJDUMP) $(OBJDUMP_FLAGS) $(RELEASE)/$${APP}.elf > $(DEBUG)/$${APP}.lst;\
-	done
-
-install:
-	@echo "$(YELLOW)-------- Create the Disk Image --------$(END)"
-	$(CC) $(TOOLS)/mkfs.c library/file/file.c -DMKFS $(INCLUDE) -o $(TOOLS)/mkfs
-	cd $(TOOLS); ./mkfs
-	@echo "$(YELLOW)-------- Create the BootROM Image --------$(END)"
-	$(OBJCOPY) -O binary $(RELEASE)/earth.elf $(TOOLS)/earth.bin
-	$(CC) $(TOOLS)/mkrom.c -o $(TOOLS)/mkrom
-	cd $(TOOLS); ./mkrom ; rm earth.bin
-
-program:
-	@echo "$(YELLOW)-------- Program the on-board ROM --------$(END)"
-	cd $(TOOLS)/openocd; time openocd -f 7series.txt
 
 clean:
 	rm -rf build
