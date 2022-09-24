@@ -4,8 +4,8 @@
 long long mtime_get() {
     int low, high;
     do {
-        low  = *(int*)(CLINT0_MTIME);
         high = *(int*)(CLINT0_MTIME + 4);
+        low  = *(int*)(CLINT0_MTIME);
     }  while ( *(int*)(CLINT0_MTIME + 4) != high );
 
     return (((long long)high) << 32) | low;
