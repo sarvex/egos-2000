@@ -68,7 +68,7 @@ TOOLS = tools
 QEMU = tools/qemu
 DEBUG = build/debug
 RELEASE = build/release
-OBJDUMP_FLAGS =  --source --all-headers --demangle --line-numbers --wide
+OBJDUMP_FLAGS =  --source --demangle --line-numbers --wide
 
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
