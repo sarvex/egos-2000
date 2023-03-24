@@ -14,7 +14,7 @@ for file in files:
 
 
 print("\033[1;32m[INFO] In total, there are {} instructions.\033[0m".format(len(instructions)))
-print(instructions)
+print(sorted(list(instructions)))
 
 exist = {"csrr", "csrw", 
          "add", "sub", "mul", "and", "or", "xor", "slt", "sltu", "sra", "srl", "sll",
@@ -24,10 +24,10 @@ exist = {"csrr", "csrw",
          "bne", "beq", "blt", "bltu", "bge", "bgeu"}
 
 print("\033[1;32m[INFO] There exist {} instructions.\033[0m".format(len(exist)))
-print(exist)
+print(sorted(list(exist)))
 
 rest = instructions - exist
 print("\033[1;32m[INFO] There are {} more instructions to be implemented.\033[0m".format(len(rest)))
-print(rest)
+print(sorted(list(rest)))
 
 f.close()
